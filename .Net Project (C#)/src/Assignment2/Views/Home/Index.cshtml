@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<Assignment2.Models.BlogPost>
+@{
+    Layout = "_Layout";
+}
+<h3>Blog Posts</h3>
+
+<br />
+
+<div class="row">
+    <div class="col-sm-12">
+
+        @if (Model == null || Model.Count() == 0)
+        {
+
+            <h4>There are no blog posts.</h4>
+
+        }
+        else
+        {
+
+            <table class="table">
+
+                @foreach (var item in Model)
+                {
+                    @if (item.IsAvailable)
+                    {
+                        <tr>
+                            <td>
+                                <div class="blog">
+                                    <h4><a asp-controller="Home" asp-action="DisplayFullBlogPost" asp-route-id="@item.BlogPostId" role="button">@item.Title</a></h4>
+
+                                    @if (item.Photos == null || item.Photos.Count == 0)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <hr />
+                                        <img src="@item.Photos[0].Url" style="max-width: 150px; max-height: 150px; margin: 5px;" />
+                                        <br />
+                                        <hr />
+
+                                    }
+                                    @item.ShortDescription
+                                    <br />
+                                    <br />
+
+                                    <i>Posted on: @item.Posted</i>
+
+                                    @if (Context.Session.GetString("id") != null && Context.Session.GetString("roleId") == "1")
+                                    {
+                                        <div align="right">
+                                            <a asp-controller="Home" asp-action="EditBlogPost" asp-route-id="@item.BlogPostId" class="btn btn-outline-primary btn-sm" role="button">Edit</a>
+                                            <a asp-controller="Home" asp-action="DeleteBlogPost" asp-route-id="@item.BlogPostId" class="btn btn-outline-danger btn-sm" role="button">Delete</a>
+                                        </div>
+                                    }
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else if(!item.IsAvailable && Context.Session.GetString("roleId") == "1")
+                    {
+                        <tr>
+                            <td>
+                                <div class="blog">
+                                    <h4><a asp-controller="Home" asp-action="DisplayFullBlogPost" asp-route-id="@item.BlogPostId" role="button">@item.Title (Unavailable)</a></h4>
+
+                                    @if (item.Photos == null || item.Photos.Count == 0)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <hr />
+                                        <img src="@item.Photos[0].Url" style="max-width: 150px; max-height: 150px; margin: 5px;" />
+                                        <br />
+                                        <hr />
+
+                                    }
+                                    @item.ShortDescription
+                                    <br />
+                                    <br />
+
+                                    <i>Posted on: @item.Posted</i>
+
+                                    @if (Context.Session.GetString("id") != null && Context.Session.GetString("roleId") == "1")
+                                    {
+                                        <div align="right">
+                                            <a asp-controller="Home" asp-action="EditBlogPost" asp-route-id="@item.BlogPostId" class="btn btn-outline-primary btn-sm" role="button">Edit</a>
+                                            <a asp-controller="Home" asp-action="DeleteBlogPost" asp-route-id="@item.BlogPostId" class="btn btn-outline-danger btn-sm" role="button">Delete</a>
+                                        </div>
+                                    }
+
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+
+
+            </table>
+
+        }
+
+    </div>
+</div>

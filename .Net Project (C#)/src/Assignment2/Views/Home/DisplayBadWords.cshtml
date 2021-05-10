@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Assignment2.Models.BadWord>
+@{
+    Layout = "_Layout";
+}
+
+<h3>Add Bad Word</h3>
+<hr />
+<form asp-action="AddBadWord" asp-controller="Home" method="post">
+    <div class="form-group">
+        <label>Word:</label>
+        <input type="text" maxlength="50" id="word" name="word" class="form-control" required />
+    </div>
+
+    <input type="submit" class="btn btn-light btn-outline-dark" value="Add Bad Word" />
+</form>
+<br />
+<h3>Bad Words</h3>
+<br />
+@if(Model == null || Model.Count() == 0)
+{ 
+    <p> No Bad Words</p>
+}else{
+
+    <table class="table">
+
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Word
+                    <div align="right">
+                        <a asp-controller="Home" asp-action="DeleteBadWord" asp-route-id="@item.BadWordId" class="btn btn-outline-danger btn-sm" role="button">Delete</a>
+                    </div>
+                </td>
+
+            </tr>
+
+        }
+
+
+    </table>
+
+}

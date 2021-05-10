@@ -1,0 +1,92 @@
+﻿@using Assignment2.Models;
+@using Microsoft.AspNetCore.Http;
+@{
+    BlogPost blogPost = ViewData["BlogPost"] as BlogPost;
+}
+@{
+    Layout = "_Layout";
+}
+
+<h3>@blogPost.Title</h3>
+<i>Written by: @blogPost.User.FirstName @blogPost.User.LastName <br />Email: @blogPost.User.EmailAddress</i>
+<br />
+
+<i>Posted on: @blogPost.Posted;</i>
+
+<p> <br />@blogPost.Content</p>
+
+<h3> Photos </h3>
+@if(blogPost.Photos == null || blogPost.Photos.Count == 0)
+{
+
+    <p>No photos in this post</p>
+
+}
+else
+{
+
+    <table class="table">
+
+        @foreach (Photo photo in blogPost.Photos)
+        {
+            <tr>
+                <td style="vertical-align: top">
+                    <br />
+                    <img src="@photo.Url" style="max-width: 400px;" />
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+<h4>Comments</h4>
+@if (blogPost.Comments == null)
+{
+
+    <p>There are no comments to display. Be the first to comment!</p>
+
+}
+else
+{
+
+    @foreach (Comment comment in blogPost.Comments)
+    {
+        <hr />
+        <div class="blog">
+
+            <p>@comment.Content</p>
+
+
+
+
+            By: @comment.User.FirstName @comment.User.LastName <i>@comment.User.EmailAddress</i>
+        </div>
+    }
+
+}
+<br />
+<br />
+@if (Context.Session.GetString("id") == null)
+{
+
+    <h4>Log In to Comment</h4>
+    <a asp-action="login" asp-controller="home">You must Log In to comment</a>
+
+}
+else
+{
+
+    <h4>Add Comment</h4>
+    <form asp-controller="Home" asp-action="CreateComment" method="post">
+        <input type="hidden" value="@blogPost.BlogPostId" name="BlogPostId" />
+        <input type="hidden" value="@Context.Session.GetString("id")" name="UserId" />
+        <div class="form-group">
+            <label>Comment Content:</label>
+            <textarea class="form-control" rows="10" data-val-length-max="4000" id="Content" name="Content"></textarea>
+        </div>
+
+        <input type="submit" class="btn btn-light btn-outline-dark" value="Comment" />
+    </form>
+}

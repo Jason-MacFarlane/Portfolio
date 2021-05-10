@@ -1,0 +1,19 @@
+﻿@model Assignment2.Models.User
+@{
+    Layout = "_Layout";
+}
+<h3> Login</h3>
+<hr />
+<form asp-controller="Home" asp-action="LoginUser" method="post">
+
+    <div class="form-group">
+        <label>Email Address:</label>
+        <input asp-for="EmailAddress" required class="form-control" name="email">
+    </div>
+    <div class="form-group">
+        <label>Password:</label>
+        <input type="Password" asp-for="Password" required class="form-control" name="password" />
+    </div>
+
+    <input type="submit" class="btn btn-light btn-outline-dark" value="Login" />
+</form>
